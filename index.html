@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agendamento – Clínica ABA</title>
+<style>
+:root{--bg:#f0ebf8;--card:#fff;--ink:#202124;--mute:#5f6368;--line:#dadce0;--pri:#673ab7;--err:#d93025;--ok:#188038}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1626;--card:#262033;--ink:#e8eaed;--mute:#a8a3b5;--line:#443d56;--pri:#b79cf0;--err:#f28b82;--ok:#81c995}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",Roboto,Arial,sans-serif;padding:16px 12px 48px}
+main{max-width:640px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin-bottom:12px}
+.head{border-top:10px solid var(--pri)}
+h1{font-size:26px;font-weight:400;margin:0 0 8px}
+h2{font-size:17px;font-weight:500;margin:0 0 4px;color:var(--pri)}
+.sub{color:var(--mute);font-size:13px;margin:0 0 14px}
+.req{color:var(--err)}
+label.f{display:block;margin:16px 0 0;font-weight:500}
+input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{
+width:100%;margin-top:6px;padding:9px 2px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;border-radius:0}
+select{padding:9px 0}
+textarea{resize:vertical;min-height:70px}
+input:focus,select:focus,textarea:focus{outline:0;border-bottom:2px solid var(--pri)}
+input[readonly]{color:var(--mute)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.row3{display:grid;grid-template-columns:2fr 1fr;gap:0 18px}
+@media (max-width:520px){.row,.row3{grid-template-columns:1fr}}
+.opt{display:flex;gap:10px;align-items:flex-start;margin:10px 0 0;font-weight:400;cursor:pointer}
+.opt input{margin-top:4px;accent-color:var(--pri)}
+.hint{font-size:12px;color:var(--mute);margin-top:4px}
+.err{border-color:var(--err)!important}
+.msg{font-size:12px;color:var(--err);margin-top:4px;display:none}
+.card.bad{border-color:var(--err)}
+.card.bad .msg{display:block}
+button{font:inherit;font-weight:500;border:0;border-radius:4px;padding:10px 24px;cursor:pointer}
+.go{background:var(--pri);color:#fff}
+.go:disabled{opacity:.6}
+.ghost{background:transparent;color:var(--pri)}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+#cepst{font-size:12px;margin-top:4px;min-height:18px}
+#done{display:none}
+dl{margin:12px 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+dt{color:var(--mute)}dd{margin:0}
+:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<form id="form" novalidate>
+
+<section class="card head">
+  <h1>Agendamento – Clínica de Análise do Comportamento Aplicado</h1>
+  <p class="sub">Preencha os dados abaixo para solicitar um horário. Nossa equipe confirmará o agendamento por telefone ou WhatsApp em até 1 dia útil.</p>
+  <span class="hint"><span class="req">*</span> Indica uma pergunta obrigatória</span>
+</section>
+
+<section class="card">
+  <h2>Dados do paciente</h2>
+  <label class="f">Nome completo do paciente <span class="req">*</span>
+    <input type="text" name="paciente" required autocomplete="off"></label>
+  <div class="row">
+    <label class="f">Data de nascimento <span class="req">*</span>
+      <input type="date" name="nascimento" required></label>
+    <label class="f">Sexo
+      <select name="sexo"><option value="">Selecione</option><option>Feminino</option><option>Masculino</option><option>Prefiro não informar</option></select></label>
+  </div>
+  <div class="row">
+    <label class="f">CPF do paciente
+      <input type="text" name="cpf_pac" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" data-mask="cpf"></label>
+    <label class="f">Escola (se aplicável)
+      <input type="text" name="escola"></label>
+  </div>
+  <label class="f">Diagnóstico ou hipótese diagnóstica
+    <select name="diagnostico"><option value="">Selecione</option><option>TEA – Transtorno do Espectro Autista</option><option>TDAH</option><option>Atraso no desenvolvimento</option><option>Deficiência intelectual</option><option>Em investigação</option><option>Outro</option></select></label>
+  <label class="f">Possui laudo?
+    <div class="opt"><input type="radio" name="laudo" value="Sim"> Sim</div>
+    <div class="opt"><input type="radio" name="laudo" value="Não"> Não</div>
+    <div class="opt"><input type="radio" name="laudo" value="Em andamento"> Em andamento</div>
+  </label>
+</section>
+
+<section class="card">
+  <h2>Dados do responsável</h2>
+  <label class="f">Nome completo do responsável <span class="req">*</span>
+    <input type="text" name="responsavel" required></label>
+  <div class="row">
+    <label class="f">Parentesco
+      <select name="parentesco"><option value="">Selecione</option><option>Mãe</option><option>Pai</option><option>Avó/Avô</option><option>Tutor legal</option><option>Outro</option></select></label>
+    <label class="f">CPF do responsável <span class="req">*</span>
+      <input type="text" name="cpf_resp" required inputmode="numeric" maxlength="14" placeholder="000.000.000-00" data-mask="cpf"></label>
+  </div>
+  <div class="row">
+    <label class="f">Telefone / WhatsApp <span class="req">*</span>
+      <input type="tel" name="telefone" required maxlength="15" placeholder="(00) 00000-0000" data-mask="tel"></label>
+    <label class="f">E-mail <span class="req">*</span>
+      <input type="email" name="email" required placeholder="nome@email.com"></label>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Endereço</h2>
+  <p class="sub">Digite o CEP e o endereço será preenchido automaticamente.</p>
+  <label class="f">CEP <span class="req">*</span>
+    <input type="text" name="cep" id="cep" required inputmode="numeric" maxlength="9" placeholder="00000-000" data-mask="cep"></label>
+  <div id="cepst" aria-live="polite"></div>
+  <label class="f">Logradouro <span class="req">*</span>
+    <input type="text" name="logradouro" id="logradouro" required></label>
+  <div class="row">
+    <label class="f">Número <span class="req">*</span>
+      <input type="text" name="numero" id="numero" required></label>
+    <label class="f">Complemento
+      <input type="text" name="complemento" id="complemento"></label>
+  </div>
+  <label class="f">Bairro <span class="req">*</span>
+    <input type="text" name="bairro" id="bairro" required></label>
+  <div class="row3">
+    <label class="f">Cidade <span class="req">*</span>
+      <input type="text" name="cidade" id="cidade" required></label>
+    <label class="f">UF <span class="req">*</span>
+      <input type="text" name="uf" id="uf" required maxlength="2" style="text-transform:uppercase"></label>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Agendamento</h2>
+  <label class="f">Tipo de atendimento <span class="req">*</span>
+    <select name="servico" required><option value="">Selecione</option><option>Avaliação inicial (VB-MAPP / ABLLS-R)</option><option>Sessão de terapia ABA</option><option>Orientação parental</option><option>Supervisão escolar / mediação</option><option>Reavaliação</option></select></label>
+  <label class="f">Modalidade <span class="req">*</span>
+    <div class="opt"><input type="radio" name="modalidade" value="Presencial na clínica" required> Presencial na clínica</div>
+    <div class="opt"><input type="radio" name="modalidade" value="Domiciliar"> Domiciliar</div>
+    <div class="opt"><input type="radio" name="modalidade" value="Online (orientação)"> Online (orientação parental)</div>
+  </label>
+  <div class="row">
+    <label class="f">Data preferida <span class="req">*</span>
+      <input type="date" name="data" id="data" required></label>
+    <label class="f">Período <span class="req">*</span>
+      <select name="periodo" required><option value="">Selecione</option><option>Manhã (08h–12h)</option><option>Tarde (13h–18h)</option></select></label>
+  </div>
+  <label class="f">Data alternativa
+    <input type="date" name="data2" id="data2"></label>
+  <label class="f">Convênio
+    <select name="convenio"><option>Particular</option><option>Convênio (informar nas observações)</option></select></label>
+  <label class="f">Observações
+    <textarea name="obs" placeholder="Queixas principais, terapias em andamento, medicações, necessidades específicas…"></textarea></label>
+</section>
+
+<section class="card">
+  <label class="opt" style="margin:0"><input type="checkbox" name="lgpd" required>
+    <span>Autorizo o uso dos dados informados para contato e agendamento, conforme a LGPD (Lei 13.709/2018). <span class="req">*</span></span></label>
+</section>
+
+<div class="bar">
+  <button type="submit" class="go" id="send">Solicitar agendamento</button>
+  <button type="reset" class="ghost" id="clear">Limpar formulário</button>
+</div>
+</form>
+
+<section class="card head" id="done" tabindex="-1">
+  <h1>Solicitação enviada</h1>
+  <p class="sub">Recebemos seu pedido. Entraremos em contato para confirmar o horário.</p>
+  <dl id="resumo"></dl>
+  <div class="bar">
+    <button class="go" id="copy" type="button">Copiar resumo</button>
+    <button class="ghost" id="novo" type="button">Novo agendamento</button>
+  </div>
+</section>
+</main>
+
+<script>
+// ===== CONFIGURAÇÃO =====
+// Para receber as solicitações, informe um destino (opcional):
+const WHATSAPP = "5511982355133";   // ex.: "5511999999999" abre o WhatsApp da clínica com o resumo
+const ENDPOINT = "";   // ex.: URL de um Google Apps Script / webhook que receba o JSON (POST)
+// ========================
+
+const $ = s => document.querySelector(s);
+const form = $("#form");
+
+// Máscaras
+const masks = {
+  cpf: v => v.replace(/\D/g,"").slice(0,11).replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"),
+  cep: v => v.replace(/\D/g,"").slice(0,8).replace(/(\d{5})(\d)/,"$1-$2"),
+  tel: v => v.replace(/\D/g,"").slice(0,11).replace(/(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d{1,4})$/,"$1-$2")
+};
+document.querySelectorAll("[data-mask]").forEach(el =>
+  el.addEventListener("input", () => el.value = masks[el.dataset.mask](el.value)));
+
+// Datas: não permitir passado
+const hoje = new Date().toISOString().slice(0,10);
+$("#data").min = hoje; $("#data2").min = hoje;
+document.querySelector("[name=nascimento]").max = hoje;
+
+// Consulta de CEP (ViaCEP – API pública, gratuita, sem chave)
+const st = $("#cepst");
+async function buscaCep() {
+  const cep = $("#cep").value.replace(/\D/g,"");
+  if (cep.length !== 8) return;
+  st.style.color = "var(--mute)"; st.textContent = "Buscando endereço…";
+  try {
+    const r = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    if (d.erro) { st.style.color = "var(--err)"; st.textContent = "CEP não encontrado. Preencha o endereço manualmente."; return; }
+    $("#logradouro").value = d.logradouro || "";
+    $("#bairro").value = d.bairro || "";
+    $("#cidade").value = d.localidade || "";
+    $("#uf").value = d.uf || "";
+    st.style.color = "var(--ok)"; st.textContent = "Endereço encontrado. Informe o número.";
+    $("#numero").focus();
+  } catch (e) {
+    st.style.color = "var(--err)"; st.textContent = "Não foi possível consultar o CEP agora. Preencha manualmente.";
+  }
+}
+$("#cep").addEventListener("input", buscaCep);
+
+// Validação
+const validaCpf = c => {
+  c = c.replace(/\D/g,""); if (c.length !== 11 || /^(\d)\1+$/.test(c)) return false;
+  for (let t = 9; t < 11; t++) {
+    let s = 0; for (let i = 0; i < t; i++) s += c[i] * (t + 1 - i);
+    if ((s * 10 % 11) % 10 != c[t]) return false;
+  }
+  return true;
+};
+function mostraErro(el, msg) {
+  const card = el.closest(".card"); card.classList.add("bad");
+  el.classList.add("err"); el.setCustomValidity(msg);
+}
+form.addEventListener("input", e => {
+  e.target.classList.remove("err"); e.target.setCustomValidity("");
+});
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  document.querySelectorAll(".bad").forEach(c => c.classList.remove("bad"));
+  const cp = form.cpf_resp, cpp = form.cpf_pac;
+  if (cp.value && !validaCpf(cp.value)) mostraErro(cp, "CPF inválido");
+  if (cpp.value && !validaCpf(cpp.value)) mostraErro(cpp, "CPF inválido");
+  if (form.cep.value.replace(/\D/g,"").length !== 8) mostraErro(form.cep, "CEP incompleto");
+  if (form.telefone.value.replace(/\D/g,"").length < 10) mostraErro(form.telefone, "Telefone incompleto");
+  if (!form.checkValidity()) {
+    const first = form.querySelector(":invalid");
+    first.closest(".card").classList.add("bad");
+    form.querySelectorAll(":invalid").forEach(i => { i.classList.add("err"); i.closest(".card").classList.add("bad"); });
+    first.reportValidity(); first.scrollIntoView({behavior:"smooth",block:"center"});
+    return;
+  }
+  const dados = Object.fromEntries(new FormData(form));
+  $("#send").disabled = true;
+  if (ENDPOINT) {
+    try { await fetch(ENDPOINT, {method:"POST", headers:{"Content-Type":"text/plain"}, body:JSON.stringify(dados)}); }
+    catch (_) { alert("Não foi possível enviar agora. Tente novamente ou entre em contato por telefone."); $("#send").disabled = false; return; }
+  }
+  mostraResumo(dados);
+});
+
+const fmtData = d => d ? d.split("-").reverse().join("/") : "—";
+let textoResumo = "";
+function mostraResumo(d) {
+  const linhas = [
+    ["Paciente", d.paciente], ["Nascimento", fmtData(d.nascimento)],
+    ["Responsável", d.responsavel], ["Telefone", d.telefone], ["E-mail", d.email],
+    ["Endereço", `${d.logradouro}, ${d.numero}${d.complemento ? " – " + d.complemento : ""}, ${d.bairro}, ${d.cidade}/${d.uf.toUpperCase()}, CEP ${d.cep}`],
+    ["Atendimento", d.servico], ["Modalidade", d.modalidade],
+    ["Data preferida", `${fmtData(d.data)} – ${d.periodo}`],
+    ["Data alternativa", fmtData(d.data2)], ["Convênio", d.convenio], ["Observações", d.obs || "—"]
+  ];
+  $("#resumo").innerHTML = linhas.map(([k,v]) => `<dt>${k}</dt><dd></dd>`).join("");
+  $("#resumo").querySelectorAll("dd").forEach((dd,i) => dd.textContent = linhas[i][1]);
+  textoResumo = "Solicitação de agendamento – Clínica ABA\n" + linhas.map(([k,v]) => `${k}: ${v}`).join("\n");
+  form.style.display = "none"; $("#done").style.display = "block"; $("#done").focus();
+  window.scrollTo({top:0,behavior:"smooth"});
+  if (WHATSAPP) window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(textoResumo)}`, "_blank");
+}
+$("#copy").onclick = async () => {
+  try { await navigator.clipboard.writeText(textoResumo); $("#copy").textContent = "Copiado"; } catch (_) { $("#copy").textContent = "Selecione e copie manualmente"; }
+};
+$("#novo").onclick = () => { form.reset(); st.textContent = ""; $("#send").disabled = false; $("#done").style.display = "none"; form.style.display = ""; window.scrollTo(0,0); };
+$("#clear").addEventListener("click", () => { st.textContent = ""; document.querySelectorAll(".bad,.err").forEach(c => c.classList.remove("bad","err")); });
+</script>
+</body>
+</html>
